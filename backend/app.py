@@ -90,7 +90,7 @@ def convert():
         output_path = os.path.join(DOWNLOAD_FOLDER, f"{file_id}.mp3")
 
         # Random delay before yt-dlp call
-        time.sleep(random.uniform(1, 5))
+        time.sleep(random.uniform(1, 3))
 
         # Download and convert options
         ydl_opts = {
@@ -102,13 +102,8 @@ def convert():
                 'preferredquality': '192',
             }],
             'quiet': True,
-            'format': 'bestaudio/best',
-            'extract_flat': True,
             'ignoreerrors': True,
-            'quiet': True,
             'no_warnings': True,
-            'sleep_interval': random.randint(5, 15),  # Random delay
-            'max_sleep_interval': 30,
             'extractor_args': {
                 'youtube': {
                     'skip': ['authcheck', 'webpage', 'consent']
