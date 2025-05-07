@@ -92,6 +92,11 @@ def convert():
         # Random delay before yt-dlp call
         time.sleep(random.uniform(1, 3))
 
+        user_agents = [
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/115.0',
+        ]
         # Download and convert options
         ydl_opts = {
             'format': 'bestaudio/best',
@@ -102,15 +107,16 @@ def convert():
                 'preferredquality': '192',
             }],
             'quiet': True,
+            'extract_flat': True,
             'ignoreerrors': True,
-            'no_warnings': True,
+            'user-agent': random.choice(user_agents),
+            'Accept-Language': 'en-US,en;q=0.9',
+            'referer': 'https://www.youtube.com/',
             'extractor_args': {
                 'youtube': {
-                    'skip': ['authcheck', 'webpage', 'consent']
+                    'skip': ['authcheck', 'webpage','consent']
                 }
-            },
-            'cookiefile': 'cookies.txt'  # Optional generic cookies
-
+            }
         }
 
         # First, download without trimming to get the full audio
