@@ -12,7 +12,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         // For local testing use http://localhost:5000
-        target: 'https://tiago-mp3converter.onrender.com/', // current backend URL with render
+        target: 'https://mp3converter-4w8y.onrender.com', // current backend URL with render
         changeOrigin: true,
         secure: false,
       }
