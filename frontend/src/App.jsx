@@ -15,6 +15,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { Range } from "react-range";
 import { Play, Pause, Download, Music } from "lucide-react";
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 // Convert seconds to MM:SS format
 const formatTime = (seconds) => {
   if (isNaN(seconds) || seconds < 0) return "00:00";
@@ -156,7 +158,7 @@ export default function App() {
     try {
       console.log("Starting conversion process...");
       
-      const response = await fetch("/api/convert", {
+      const response = await fetch("${API_BASE}/api/convert", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -210,7 +212,7 @@ export default function App() {
     
     try {
       // Reconvert with the new values (if added metadata added or trimmed the mp3 during preview)
-      const response = await fetch("/api/convert", {
+      const response = await fetch("${API_BASE}/api/convert", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

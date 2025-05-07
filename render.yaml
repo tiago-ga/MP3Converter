@@ -1,7 +1,7 @@
 services:
   # Backend API Service
   - type: web
-    name: mp3-converter-api
+    name: mp3converter-tiago-api
     env: python
     buildCommand: pip install -r requirements.txt
     startCommand: cd backend && gunicorn app:app
@@ -11,11 +11,11 @@ services:
     
   # Frontend Web Service
   - type: web
-    name: mp3-converter-frontend
+    name: tiago-mp3converter
     env: static
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: ./frontend/dist
     routes:
       - type: rewrite
         source: /api/*
-        destination: mp3-converter-api
+        destination: mp3converter-tiago-api
