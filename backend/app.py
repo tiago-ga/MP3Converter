@@ -30,7 +30,7 @@ from pydub import AudioSegment
 from mutagen.id3 import ID3, TIT2, TPE1, TPE2,TALB, TCON
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-PORT = int(os.environ.get("PORT", 5000))
+PORT = int(os.environ.get("PORT", 10000))
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
