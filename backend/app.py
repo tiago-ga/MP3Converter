@@ -116,7 +116,8 @@ def convert():
                 'youtube': {
                     'skip': ['authcheck', 'webpage','consent']
                 }
-            }
+            },
+            'cookiefile': 'cookies.txt'  # Optional generic cookies
         }
 
         # First, download without trimming to get the full audio
