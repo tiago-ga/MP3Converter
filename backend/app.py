@@ -29,6 +29,8 @@ import logging
 from pydub import AudioSegment
 from mutagen.id3 import ID3, TIT2, TPE1, TPE2,TALB, TCON
 from werkzeug.middleware.proxy_fix import ProxyFix
+import random
+import time
 
 PORT = int(os.environ.get("PORT", 5000))
 
@@ -87,6 +89,9 @@ def convert():
         file_id = uuid.uuid4()
         output_path = os.path.join(DOWNLOAD_FOLDER, f"{file_id}.mp3")
 
+        # Random delay before yt-dlp call
+        time.sleep(random.uniform(1, 5))
+
         # Download and convert options
         ydl_opts = {
             'format': 'bestaudio/best',
@@ -97,6 +102,20 @@ def convert():
                 'preferredquality': '192',
             }],
             'quiet': True,
+            'format': 'bestaudio/best',
+            'extract_flat': True,
+            'ignoreerrors': True,
+            'quiet': True,
+            'no_warnings': True,
+            'sleep_interval': random.randint(5, 15),  # Random delay
+            'max_sleep_interval': 30,
+            'extractor_args': {
+                'youtube': {
+                    'skip': ['authcheck', 'webpage', 'consent']
+                }
+            },
+            'cookiefile': 'cookies.txt'  # Optional generic cookies
+
         }
 
         # First, download without trimming to get the full audio
@@ -155,7 +174,7 @@ def convert():
     
     except Exception as e:
         logger.error(f"Conversion failed: {str(e)}")
-        cleanup()
+        cleanup_temp_dir()
         return jsonify({"error": f"Conversion failed: {str(e)}"}), 500
 
 def add_metadata_to_mp3(file_path, data):
