@@ -34,8 +34,16 @@ PORT = int(os.environ.get("PORT", 5000))
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
-CORS(app, origins=["https://tiago-mp3converter.onrender.com/", "http://localhost:3000"], 
-     expose_headers=['X-Video-Title'], supports_credentials=False)
+# CORS(app, expose_headers=['X-Video-Title'])
+# Configure CORS with both local and production origins
+CORS(app,
+     origins=[
+         "http://localhost:5173",  # Vite default frontend port
+         "http://localhost:5000",  # Local backend
+         "https://tiago-mp3converter.onrender.com/",    # Production frontend
+         "https://mp3converter-tiago-api.onrender.com"  # Production backend
+     ],
+     expose_headers=['X-Video-Title'])
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -201,4 +209,4 @@ def add_metadata_to_mp3(file_path, data):
         # Continue without metadata if it fails
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=PORT)
+    app.run(host="0.0.0.0", port=PORT)
