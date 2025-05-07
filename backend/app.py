@@ -28,9 +28,13 @@ import uuid
 import logging
 from pydub import AudioSegment
 from mutagen.id3 import ID3, TIT2, TPE1, TPE2,TALB, TCON
+from werkzeug.middleware.proxy_fix import ProxyFix
+
+PORT = int(os.environ.get("PORT", 5000))
 
 app = Flask(__name__)
-CORS(app, expose_headers=['X-Video-Title'])
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
+CORS(app, origins=["https://mp3-converter.onrender.com", "http://localhost:3000"], expose_headers=['X-Video-Title'])
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -55,8 +59,6 @@ atexit.register(cleanup_temp_dir)
 
 @app.route("/api/convert", methods=["POST", "OPTIONS"])
 def convert():
-    # Clean temp_download before converting a new file
-    cleanup_temp_dir()
     if request.method == "OPTIONS":
         return jsonify({"status": "ok"}), 200
 
@@ -137,16 +139,8 @@ def convert():
         # Add the original video title to headers
         response.headers['X-Video-Title'] = title
 
-        # Add cleanup callback after response
-        @response.call_on_close
-        def cleanup():
-            try:
-                # Clear the entire downloads folder
-                shutil.rmtree(DOWNLOAD_FOLDER)
-                os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
-                logger.info("Successfully cleaned up downloads folder")
-            except Exception as e:
-                logger.error(f"Failed to clean up downloads folder: {str(e)}")
+        # Clean temp_download after response
+        cleanup_temp_dir()
         
         return response
     
@@ -206,4 +200,4 @@ def add_metadata_to_mp3(file_path, data):
         # Continue without metadata if it fails
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(host="0.0.0.0", debug=True,port=PORT)

@@ -1,0 +1,21 @@
+services:
+  # Backend API Service
+  - type: web
+    name: mp3-converter-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd backend && gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    
+  # Frontend Web Service
+  - type: web
+    name: mp3-converter-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: mp3-converter-api

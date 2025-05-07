@@ -156,7 +156,7 @@ export default function App() {
     try {
       console.log("Starting conversion process...");
       
-      const response = await fetch("http://localhost:5000/api/convert", {
+      const response = await fetch("/api/convert", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -210,7 +210,7 @@ export default function App() {
     
     try {
       // Reconvert with the new values (if added metadata added or trimmed the mp3 during preview)
-      const response = await fetch("http://localhost:5000/api/convert", {
+      const response = await fetch("/api/convert", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
