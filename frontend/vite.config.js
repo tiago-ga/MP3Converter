@@ -11,8 +11,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        // For local testing use http://localhost:5000
-        target: 'http://localhost:5000', // current backend URL with render
+        target: 'http://localhost:5000',
         changeOrigin: true,
         secure: false,
       }

@@ -34,7 +34,8 @@ PORT = int(os.environ.get("PORT", 5000))
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
-CORS(app, origins=["https://tiago-mp3converter.onrender.com/", "http://localhost:3000"], expose_headers=['X-Video-Title'])
+CORS(app, origins=["https://tiago-mp3converter.onrender.com/", "http://localhost:3000"], 
+     expose_headers=['X-Video-Title'], supports_credentials=False)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
