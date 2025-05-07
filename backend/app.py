@@ -200,4 +200,4 @@ def add_metadata_to_mp3(file_path, data):
         # Continue without metadata if it fails
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True,port=PORT)
+    app.run(host="0.0.0.0",port=PORT)
