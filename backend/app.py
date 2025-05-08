@@ -29,23 +29,12 @@ import logging
 from pydub import AudioSegment
 from mutagen.id3 import ID3, TIT2, TPE1, TPE2,TALB, TCON
 from werkzeug.middleware.proxy_fix import ProxyFix
-import random
-import time
 
 PORT = int(os.environ.get("PORT", 5000))
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
 CORS(app, expose_headers=['X-Video-Title'])
-# # Configure CORS with both local and production origins
-# CORS(app,
-#      origins=[
-#          "http://localhost:5173",  # Vite default frontend port
-#          "http://localhost:5000",  # Local backend
-#          "https://tiago-mp3converter.onrender.com/",    # Production frontend
-#          "https://mp3converter-tiago-api.onrender.com"  # Production backend
-#      ],
-#      expose_headers=['X-Video-Title'])
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -89,14 +78,6 @@ def convert():
         file_id = uuid.uuid4()
         output_path = os.path.join(DOWNLOAD_FOLDER, f"{file_id}.mp3")
 
-        # Random delay before yt-dlp call
-        time.sleep(random.uniform(1, 3))
-
-        user_agents = [
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/115.0',
-        ]
         # Download and convert options
         ydl_opts = {
             'format': 'bestaudio/best',
@@ -107,17 +88,6 @@ def convert():
                 'preferredquality': '192',
             }],
             'quiet': True,
-            'extract_flat': True,
-            'ignoreerrors': True,
-            'user-agent': random.choice(user_agents),
-            'Accept-Language': 'en-US,en;q=0.9',
-            'referer': 'https://www.youtube.com/',
-            'extractor_args': {
-                'youtube': {
-                    'skip': ['authcheck', 'webpage','consent']
-                }
-            },
-            'cookiefile': 'cookies.txt'  # Optional generic cookies
         }
 
         # First, download without trimming to get the full audio
