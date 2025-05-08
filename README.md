@@ -1,6 +1,6 @@
 # MP3 Converter
 
-![MP3 Converter](DemoMP3Converter.webm)
+![MP3 Converter](https://github.com/user-attachments/assets/c7d7e8b4-cfcc-471d-8e83-a2ee921e9680)
 
 A lightweight, feature-rich web application that lets you convert YouTube videos to MP3 format with advanced trimming and metadata capabilities. Perfect for creating audio snippets, podcast excerpts, or saving your favorite music tracks for offline listening.
 
