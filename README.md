@@ -197,4 +197,4 @@ Some key points to consider:
 
 ## 📝 License
 
-[MIT License]()
+[GPL-3.0 License](https://github.com/tiago-ga/MP3Converter/blob/main/LICENSE)
